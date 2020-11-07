@@ -1,7 +1,8 @@
 import got, { Response } from "got";
 
 export class RequestUtil {
-    static baseURL = "";
+    static baseURL = "https://discord.com/api";
+    static imageBaseURL = "https://cdn.discordapp.com/";
 
     static async request(path: string): Promise<Response> {
         const url = `${RequestUtil.baseURL}/${path}`;
