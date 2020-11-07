@@ -4,9 +4,9 @@ import { IEmoji } from "../interfaces/IEmoji";
 import { IGuild } from "../interfaces/IGuild";
 import { IGuildPreview } from "../interfaces/IGuildPreview";
 
-import got from "got";
+import { RequestUtil } from "../utils/requestUtil";
 
-class Guild implements IGuild {
+export class Guild implements IGuild {
     id: string;
     name: string;
     emojis: IEmoji[];
@@ -25,33 +25,32 @@ class Guild implements IGuild {
 
     async create() {
         const path = `/guilds`;
-        const { body } = await got.get("https://httpbin.org/anything", {
-            json: {
-                hello: "world",
-            },
-            responseType: "json",
-        });
+        const response = await RequestUtil.request(path);
     }
 
-    async get(id: string) {
-        const path = `/guilds/${id}`;
-        const { body } = await got.get("https://httpbin.org/anything", {
-            json: {
-                hello: "world",
-            },
-            responseType: "json",
-        });
+    async get() {
+        const path = `/guilds/${this.id}`;
+        const response = await RequestUtil.request(path);
     }
 
-    async getPreview(id: string): Promise<IGuildPreview> {
-        const path = `/guilds/${id}/preview`;
-        const response = await got.get("https://httpbin.org/anything", {
-            json: {
-                hello: "world",
-            },
-            responseType: "json",
-        });
-        const guildPreview: IGuildPreview = <IGuildPreview>response.body;
+    async getPreview(): Promise<IGuildPreview> {
+        const path = `/guilds/${this.id}/preview`;
+        const response = await RequestUtil.request(path);
+        const guildPreview = <IGuildPreview>response.body;
         return guildPreview;
+    }
+
+    async modify(): Promise<IGuild> {
+        const path = `/guilds/${this.id}`;
+        const response = await RequestUtil.request(path);
+        const guild = <IGuild>response.body;
+        return guild;
+    }
+
+    async delete(): Promise<IGuild> {
+        const path = `/guilds/${this.id}`;
+        const response = await RequestUtil.request(path);
+        const guild = <IGuild>response.body;
+        return guild;
     }
 }
