@@ -16,4 +16,12 @@ export class RequestUtil {
             throw error;
         }
     }
+
+    static async auth(url: string, query: any) {
+        try {
+            got(url, { searchParams: query });
+        } catch (error) {
+            throw error;
+        }
+    }
 }
