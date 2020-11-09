@@ -1,0 +1,16 @@
+export enum GatewayCloseEvent {
+    unknownError = 4000,
+    unknownOpcode = 4001,
+    decodeError = 4002,
+    notAuthenticated = 4003,
+    authenticationFailed = 4004,
+    alreadyAuthenticated = 4005,
+    invalidSeq = 4007,
+    rateLimited = 4008,
+    sessionTimedOut = 4009,
+    invalidShard = 4010,
+    shardingRequired = 4011,
+    invalidAPIVersion = 4012,
+    invalidIntent = 4013,
+    disallowedIntent = 4014,
+}
