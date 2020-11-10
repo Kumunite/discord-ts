@@ -1,9 +1,11 @@
 import { IOverwrite } from "./IOverwrite";
 import { IUser } from "./IUser";
 
+import { ChannelType } from "../enums/ChannelType";
+
 export interface IChannel {
     id: string;
-    type: number;
+    type: ChannelType;
     guild_id?: string;
     position?: string;
     permission_overwrites?: IOverwrite[];

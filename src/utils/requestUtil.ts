@@ -3,10 +3,50 @@ import { Constants } from "../constants";
 import got, { Response } from "got";
 
 export class RequestUtil {
-    static async request(path: string): Promise<Response<any>> {
+    static async get(path: string): Promise<Response<any>> {
         const url = `${Constants.baseUrl}/${path}`;
         try {
             const response = await got.get(url);
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async patch(path: string, body: any): Promise<Response<any>> {
+        const url = `${Constants.baseUrl}/${path}`;
+        try {
+            const response = await got.patch(url, { body });
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async post(path: string, body: any): Promise<Response<any>> {
+        const url = `${Constants.baseUrl}/${path}`;
+        try {
+            const response = await got.post(url, { body });
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async put(path: string, body: any): Promise<Response<any>> {
+        const url = `${Constants.baseUrl}/${path}`;
+        try {
+            const response = await got.put(url, { body });
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async delete(path: string): Promise<Response<any>> {
+        const url = `${Constants.baseUrl}/${path}`;
+        try {
+            const response = await got.delete(url);
             return response;
         } catch (error) {
             throw error;
@@ -21,9 +61,10 @@ export class RequestUtil {
         }
     }
 
-    static async query(url: string, query: object) {
+    static async query(url: string, query: object): Promise<Response<any>> {
         try {
-            return got.get(url, { query });
+            const response = await got.get(url, { query });
+            return response;
         } catch (error) {
             throw error;
         }
