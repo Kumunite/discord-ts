@@ -4,11 +4,9 @@ import { IChannel } from "../interfaces/IChannel";
 import { ChannelType } from "../enums/ChannelType";
 import { IOverwrite } from "../interfaces/IOverwrite";
 import { IMessage } from "../interfaces/IMessage";
-import { AuditLogEvent } from "../enums/AuditLogEvent";
 import { Embed } from "../interfaces/embed/Embed";
 import { AllowedMention } from "../interfaces/AllowedMention";
 import { IUser } from "../interfaces/IUser";
-import { MessageFlag } from "../enums/MessageFlag";
 
 export class Channel {
     channel: IChannel;
@@ -19,7 +17,7 @@ export class Channel {
 
     async get() {
         const path = `/channels/${this.channel.id}`;
-        const response = await RequestUtil.request(path);
+        const response = await RequestUtil.get(path);
         return <IChannel>response.body;
     }
 

@@ -1,30 +1,43 @@
 import { RequestUtil } from "../utils/requestUtil";
 
 import { IEmoji } from "../interfaces/IEmoji";
-import { IRole } from "../interfaces/IRole";
-import { IUser } from "../interfaces/IUser";
 
-export class Emoji implements IEmoji {
-    id: string;
-    name: string;
-    roles: IRole[];
-    user: IUser[];
+export class Emoji {
+    emoji: IEmoji;
 
     constructor(emoji: IEmoji) {
-        this.id = emoji.id;
-        this.name = emoji.name;
-        this.roles = emoji.roles;
-        this.user = emoji.user;
+        this.emoji = emoji;
+    }
+
+    async getAll(guildId: string) {
+        const path = `/guilds/${guildId}/emojis`;
+        const response = await RequestUtil.get(path);
+        return response;
     }
 
     async get(guildId: string) {
-        const path = `/guilds/${guildId}/emojis/${this.id}`;
-        const response = await RequestUtil.request(path);
+        const path = `/guilds/${guildId}/emojis/${this.emoji.id}`;
+        const response = await RequestUtil.get(path);
+        return response;
     }
 
     async create(guildId: string) {
         const path = `/guilds/${guildId}/emojis`;
-        let params: { name?: string; image?: ImageData; roles?: string[] };
-        const response = await RequestUtil.request(path);
+        type body = { name?: string; image?: ImageData; roles?: string[] };
+        const response = await RequestUtil.post(path, <body>{});
+        return response;
+    }
+
+    async modify(guildId: string) {
+        const path = `/guilds/${guildId}/emojis/${this.emoji.id}`;
+        type body = { name?: string; roles?: string[] };
+        const response = await RequestUtil.patch(path, <body>{});
+        return response;
+    }
+
+    async delete(guildId: string) {
+        const path = `/guilds/${guildId}/emojis/${this.emoji.id}`;
+        const response = await RequestUtil.delete(path);
+        return response;
     }
 }

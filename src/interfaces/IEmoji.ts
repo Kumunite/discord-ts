@@ -4,8 +4,8 @@ import { IUser } from "./IUser";
 export interface IEmoji {
     id: string;
     name: string;
-    roles: IRole[];
-    user: IUser[];
+    roles?: string[];
+    user?: IUser[];
     require_colons?: boolean;
     managed?: boolean;
     animated?: boolean;
