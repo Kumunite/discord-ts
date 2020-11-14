@@ -4,8 +4,7 @@
     "description": "Typescript discord package.",
     "main": "src/app.ts",
     "scripts": {
-        "test": "mocha -r ts-node/register src/tests/**/*.test.ts",
-        "coverage": "nyc mocha -r ts-node/register test/**/*.test.ts",
+        "test": "jest",
         "build": "tsc -p ./tsconfig.json",
         "format": "prettier --write --config ./.prettierrc ./src"
     },
@@ -23,11 +22,17 @@
     },
     "homepage": "https://github.com/Kumunite/discord-ts#readme",
     "dependencies": {
-        "got": "^11.8.0"
+        "axios": "^0.21.0",
+        "qs": "^6.9.4",
+        "typescript": "^4.0.5"
     },
     "devDependencies": {
-        "@types/got": "^9.6.11",
+        "@types/axios": "^0.14.0",
+        "@types/jest": "^26.0.15",
         "@types/prettier": "^2.1.5",
-        "prettier": "^2.1.2"
+        "@types/qs": "^6.9.5",
+        "jest": "^26.6.3",
+        "prettier": "^2.1.2",
+        "ts-jest": "^26.4.4"
     }
 }

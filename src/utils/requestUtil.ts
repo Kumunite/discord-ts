@@ -1,52 +1,55 @@
+import { GatewayController } from "../controllers/gatewayController";
 import { Constants } from "../constants";
 
-import got, { Response } from "got";
+// @ts-ignore
+import Axios, { AxiosResponse } from "axios";
+import { stringify } from "qs";
 
 export class RequestUtil {
-    static async get(path: string): Promise<Response<any>> {
+    static async get(path: string): Promise<AxiosResponse<any>> {
         const url = `${Constants.baseUrl}/${path}`;
         try {
-            const response = await got.get(url);
+            const response = await Axios.get(url);
             return response;
         } catch (error) {
             throw error;
         }
     }
 
-    static async patch(path: string, body: any): Promise<Response<any>> {
+    static async patch(path: string, body: any): Promise<AxiosResponse<any>> {
         const url = `${Constants.baseUrl}/${path}`;
         try {
-            const response = await got.patch(url, { body });
+            const response = await Axios.patch(url, { body });
             return response;
         } catch (error) {
             throw error;
         }
     }
 
-    static async post(path: string, body: any): Promise<Response<any>> {
+    static async post(path: string, body: any): Promise<AxiosResponse<any>> {
         const url = `${Constants.baseUrl}/${path}`;
         try {
-            const response = await got.post(url, { body });
+            const response = await Axios.post(url, { body });
             return response;
         } catch (error) {
             throw error;
         }
     }
 
-    static async put(path: string, body: any): Promise<Response<any>> {
+    static async put(path: string, body: any): Promise<AxiosResponse<any>> {
         const url = `${Constants.baseUrl}/${path}`;
         try {
-            const response = await got.put(url, { body });
+            const response = await Axios.put(url, { body });
             return response;
         } catch (error) {
             throw error;
         }
     }
 
-    static async delete(path: string): Promise<Response<any>> {
+    static async delete(path: string): Promise<AxiosResponse<any>> {
         const url = `${Constants.baseUrl}/${path}`;
         try {
-            const response = await got.delete(url);
+            const response = await Axios.delete(url);
             return response;
         } catch (error) {
             throw error;
@@ -55,17 +58,33 @@ export class RequestUtil {
 
     static async auth(url: string, query: any) {
         try {
-            got(url, { query });
+            let queryString = stringify(query);
+            const response = await Axios.get(url, { params: queryString });
+            return response;
         } catch (error) {
             throw error;
         }
     }
 
-    static async query(url: string, query: object): Promise<Response<any>> {
+    static async query(url: string, query: object): Promise<AxiosResponse<any>> {
         try {
-            const response = await got.get(url, { query });
+            let queryString = stringify(query);
+            const response = await Axios.get(url, { params: queryString });
             return response;
         } catch (error) {
+            throw error;
+        }
+    }
+
+    static async gateway(body: any): Promise<AxiosResponse<any>> {
+        try {
+            let query = { v: Constants.gatewayVersion, encoding: "json" };
+            let queryString = stringify(query);
+            const response = await Axios.post(Constants.gatewayBaseURL, { params: queryString, body });
+            return response;
+        } catch (error) {
+            let url = await GatewayController.getGatewayURL();
+            Constants.gatewayBaseURL = url;
             throw error;
         }
     }

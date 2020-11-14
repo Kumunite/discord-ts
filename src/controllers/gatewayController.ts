@@ -19,7 +19,7 @@ export class GatewayController {
         });
     }
 
-    hello() {
+    async hello() {
         let helloEvent: HelloEvent = {
             heartbeat_interval: 45000,
         };
@@ -27,67 +27,73 @@ export class GatewayController {
             op: GatewayOpcode.hello,
             d: helloEvent,
         };
+        const response = await RequestUtil.gateway(payloads);
+        return response.data;
     }
 
-    ready() {
-        let readyEvent: ReadyEvent;
+    async ready(event: ReadyEvent) {
+        let readyEvent: ReadyEvent = event;
         let payloads: GatewayPayload = {
             op: GatewayOpcode.hello,
             d: readyEvent,
         };
+        const response = await RequestUtil.gateway(payloads);
+        return response.data;
     }
 
-    resumed() {}
-    reconnected() {}
-    invalidSession() {}
-    createChannel() {}
+    async resumed() {}
+    async reconnected() {}
+    async invalidSession() {}
+    async createChannel() {}
 
-    updateChannel() {}
-    deleteChannel() {}
-    pinChannelUpdate() {}
+    async updateChannel() {}
+    async deleteChannel() {}
+    async pinChannelUpdate() {}
 
-    createGuild() {}
-    updateGuild() {}
-    deleteGuild() {}
-    addBan() {}
-    removeBan() {}
-    updateEmoji() {}
-    updateIntegration() {}
-    addMember() {}
-    removeMember() {}
-    updateMember() {}
-    memberChunk() {}
-    createRole() {}
-    updateRole() {}
-    deleteRole() {}
+    async createGuild() {}
+    async updateGuild() {}
+    async deleteGuild() {}
+    async addBan() {}
+    async removeBan() {}
+    async updateEmoji() {}
+    async updateIntegration() {}
+    async addMember() {}
+    async removeMember() {}
+    async updateMember() {}
+    async memberChunk() {}
+    async createRole() {}
+    async updateRole() {}
+    async deleteRole() {}
 
-    createInvite() {}
-    deleteInvite() {}
+    async createInvite() {}
+    async deleteInvite() {}
 
-    createMessage() {}
-    updateMessage() {}
-    deleteMessageBulk() {}
-    addMessageReaction() {}
-    removeMessageReaction() {}
-    removeAllMessageReactions() {}
-    removeMessageReactionEmoji() {}
+    async createMessage() {}
+    async updateMessage() {}
+    async deleteMessageBulk() {}
+    async addMessageReaction() {}
+    async removeMessageReaction() {}
+    async removeAllMessageReactions() {}
+    async removeMessageReactionEmoji() {}
 
-    updatePresence() {}
-    typingStart() {}
-    userUpdate() {}
-    voiceStateUpdate() {}
-    voiceServerUpdate() {}
-    webhooksUpdate() {}
+    async updatePresence() {}
+    async typingStart() {}
+    async userUpdate() {}
+    async voiceStateUpdate() {}
+    async voiceServerUpdate() {}
+    async webhooksUpdate() {}
 
-    async getGateway() {
-        const path = `/gateway`;
-        const response = await RequestUtil.request(path);
-        type T = { url: string };
+    static async getGatewayURL() {
+        const path = `gateway`;
+        const response = await RequestUtil.get(path);
+        type body = { url: string };
+        return (<body>response.data).url;
     }
 
     async getGatewayBot() {
-        const path = `/gateway/bot`;
-        const response = await RequestUtil.request(path);
-        type T = { url: string; shards: string; session_start_limit: SessionStartLimit };
+        const path = `gateway/bot`;
+        const response = await RequestUtil.get(path);
+        type body = { url: string; shards: string; session_start_limit: SessionStartLimit };
+        return <body>response.data;
     }
 }
