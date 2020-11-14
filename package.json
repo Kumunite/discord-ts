@@ -1,6 +1,6 @@
 {
     "name": "dc-ts",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "description": "Typescript discord package.",
     "main": "src/app.ts",
     "scripts": {
