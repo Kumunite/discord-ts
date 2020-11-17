@@ -1,4 +1,3 @@
-import { GatewayController } from "../controllers/gatewayController";
 import { Constants } from "../constants";
 
 // @ts-ignore
@@ -68,8 +67,8 @@ export class RequestUtil {
 
     static async query(url: string, query: object): Promise<AxiosResponse<any>> {
         try {
-            let queryString = stringify(query);
-            const response = await Axios.get(url, { params: queryString });
+            // let queryString = stringify(query);
+            const response = await Axios.get(url, { params: query });
             return response;
         } catch (error) {
             throw error;
@@ -79,12 +78,10 @@ export class RequestUtil {
     static async gateway(body: any): Promise<AxiosResponse<any>> {
         try {
             let query = { v: Constants.gatewayVersion, encoding: "json" };
-            let queryString = stringify(query);
-            const response = await Axios.post(Constants.gatewayBaseURL, { params: queryString, body });
+            // let queryString = stringify(query);
+            const response = await Axios.post(Constants.gatewayBaseURL, body, { params: query, responseType: "json" });
             return response;
         } catch (error) {
-            let url = await GatewayController.getGatewayURL();
-            Constants.gatewayBaseURL = url;
             throw error;
         }
     }

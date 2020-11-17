@@ -3,7 +3,7 @@ import { SessionStartLimit } from "../interfaces/gateway/SessionStartLimit";
 import { GatewayPayload } from "../interfaces/gateway/GatewayPayload";
 import { GatewayOpcode } from "../enums/gateway/GatewayOpcode";
 import { HelloEvent } from "../interfaces/gateway/events/helloEvent";
-import { ReadyEvent } from "../interfaces/gateway/events/readyEvent";
+import { IdentifyEvent } from "../interfaces/gateway/events/identifyEvent";
 
 export class GatewayController {
     baseURL = `wss://gateway.discord.gg/`;
@@ -19,7 +19,7 @@ export class GatewayController {
         });
     }
 
-    async hello() {
+    static async hello() {
         let helloEvent: HelloEvent = {
             heartbeat_interval: 45000,
         };
@@ -31,11 +31,19 @@ export class GatewayController {
         return response.data;
     }
 
-    async ready(event: ReadyEvent) {
-        let readyEvent: ReadyEvent = event;
+    async heartbeat(sequenceNumber?: number) {
         let payloads: GatewayPayload = {
-            op: GatewayOpcode.hello,
-            d: readyEvent,
+            op: GatewayOpcode.heartbeat,
+            d: sequenceNumber ?? null,
+        };
+        const response = await RequestUtil.gateway(payloads);
+        return response.data;
+    }
+
+    async identify(event: IdentifyEvent) {
+        let payloads: GatewayPayload = {
+            op: GatewayOpcode.identify,
+            d: event,
         };
         const response = await RequestUtil.gateway(payloads);
         return response.data;
@@ -90,7 +98,10 @@ export class GatewayController {
         return (<body>response.data).url;
     }
 
-    async getGatewayBot() {
+    /*
+     * This endpoint requires authentication using a valid bot token.
+     * */
+    static async getGatewayBot() {
         const path = `gateway/bot`;
         const response = await RequestUtil.get(path);
         type body = { url: string; shards: string; session_start_limit: SessionStartLimit };
